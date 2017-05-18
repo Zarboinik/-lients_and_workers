@@ -8,11 +8,11 @@ public class ThreadClient implements Runnable {
     private int timeout;
     private int n = 0;
     private JLabel jLabel;
-    private Quest quest;
+    private JobList jobList;
 
-    public ThreadClient(JLabel jLabel, Quest quest) {
+    public ThreadClient(JLabel jLabel, JobList jobList) {
         this.jLabel = jLabel;
-        this.quest = quest;
+        this.jobList = jobList;
     }
 
     @Override
@@ -20,7 +20,7 @@ public class ThreadClient implements Runnable {
         while (true){
             timeout = random.nextInt(2) * 1000 + 1000;
             jLabel.setText(String.valueOf(n++));
-            quest.setJobs(quest.getJobs()+1);
+            jobList.setJobs(new Job());
             try {
                 Thread.sleep(timeout);
             } catch (InterruptedException e) {

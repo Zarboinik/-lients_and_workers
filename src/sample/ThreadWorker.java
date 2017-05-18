@@ -1,33 +1,32 @@
 package sample;
 
 import javax.swing.*;
-import java.util.Random;
 
 public class ThreadWorker implements Runnable {
-    private Random random = new Random();
-    private int timeout;
-    private int i = 0;
+    private int i;
     private JLabel jLabelWorker;
-    private Quest quest;
+    private JLabel jLabelJobs;
+    private JobList jobList;
 
-    public ThreadWorker(JLabel jLabelWorker, Quest quest) {
+    public ThreadWorker(JLabel jLabelWorker,JLabel jLabelJobs, JobList jobList) {
         this.jLabelWorker = jLabelWorker;
-        this.quest = quest;
+        this.jLabelJobs = jLabelJobs;
+        this.jobList = jobList;
     }
 
     @Override
     public void run() {
         while (true) {
-            if (quest.getJobs() > 1){
-            i++;
-            timeout = random.nextInt(2) * 1000 + 1000;
-            quest.setJobs(quest.getJobs()-1);
-            jLabelWorker.setText(String.valueOf(i));
+            Job job = jobList.getJob();
+            if (job != null) {
+                job.doJob();
+                jLabelWorker.setText(String.valueOf(i++));
+                jLabelJobs.setText(String.valueOf(jobList.allJobs()));
+            }
             try {
-                Thread.sleep(timeout);
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
-                e.printStackTrace();
-                }
+                    e.printStackTrace();
             }
         }
     }
